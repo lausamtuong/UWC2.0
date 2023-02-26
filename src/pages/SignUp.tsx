@@ -100,6 +100,7 @@ const SignUp = () => {
       </div>
       <b className="absolute top-[123px] left-[179px] text-[64px] inline-block font-poppins text-black w-[300px] h-[134px] [text-shadow:0px_0px_0px_rgba(255,_255,_255,_0.01)] [-webkit-text-stroke:1px_#000]">{`Sign Up `}</b>
     </div>
+    
   );
 };
 
