@@ -7,6 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
+        <div>hello</div>
         <Component {...pageProps} />
       </QueryClientProvider>
     </React.StrictMode>
