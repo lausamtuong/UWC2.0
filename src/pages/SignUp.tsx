@@ -1,10 +1,14 @@
+
+import Link  from 'next/link'
+
 const SignUp = () => {
   return (
     <div className="relative bg-white-color w-full h-[960px] text-left text-lg text-text-primary-color font-bold-37">
       <div className="absolute top-[231px] left-[179px] shadow-[0px_0px_0px_4px_rgba(255,_255,_255,_0.01)] flex flex-col items-start justify-start gap-[34px]">
         <div className="shadow-[0px_0px_0px_4px_rgba(255,_255,_255,_0.01)] flex flex-col items-start justify-start gap-[10px]">
           <b className="relative [text-shadow:0px_0px_0px_rgba(255,_255,_255,_0.01)]">
-            Welcome back UWC 2.0
+            Welcome back UWC 2.0   
+            <Link href="/">Home</Link>
           </b>
           <div className="relative text-base leading-[24px] text-nd-text-color">
             Welcome back! Please enter your details.

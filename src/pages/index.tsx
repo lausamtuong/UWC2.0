@@ -4,6 +4,7 @@ import {
   useQuery,
   
 } from '@tanstack/react-query'
+
 export default function Home() {
   const query = useQuery({ queryKey: ['posts'], queryFn:()=> getWeatherApi("London","2022-12-25")})
   return (
@@ -12,3 +13,5 @@ export default function Home() {
     </h1>
   )
 }
+
+
