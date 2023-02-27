@@ -23,9 +23,19 @@ module.exports = {
         manrope: "Manrope",
       },
       borderRadius: { base: "10px" },
+      screens: {
+      'sm': '576px',
+      // => @media (min-width: 576px) { ... }
+      '2sm':'760px',
+
+      'md': '960px',
+      // => @media (min-width: 960px) { ... }
+
+      'lg': '1440px',
+      // => @media (min-width: 1440px) { ... }
     },
-    fontSize: { sm: "14px", base: "16px", lg: "37px" },
   },
 
   plugins: [],
+}
 }
