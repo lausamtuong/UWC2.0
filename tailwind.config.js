@@ -4,7 +4,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
- 
+
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
@@ -18,7 +18,10 @@ module.exports = {
         "divider-color": "#e4e4e4",
         "nd-text-color": "#808191",
       },
-      fontFamily: { poppins: "Poppins", "bold-37": "Manrope" },
+      fontFamily: {
+        poppins: "Poppins",
+        manrope: "Manrope",
+      },
       borderRadius: { base: "10px" },
     },
     fontSize: { sm: "14px", base: "16px", lg: "37px" },
