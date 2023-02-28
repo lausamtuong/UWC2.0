@@ -1,24 +1,26 @@
 import { Header } from "@/Components/Header";
 import Sidebar from "@/Components/Sidebar";
-import Maps from "../Components/Map";
-
-
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 export default function Dashboard() {
-  const center = {
-    lat: 37.7749,
-    lng: -122.4194,
-  };
+  const MapWithNoSSR = dynamic(() => import("../components/Map"), {
+    ssr: false,
+  });
+  const [showMap, setShowMap] = useState(false);
 
-  const zoom = 10;
+  useEffect(() => {
+    setShowMap(true);
+  }, []);
+
   return (
     <>
       <Header />
       <Sidebar />
       <div className="ml-[30px] sm:ml-[250px] bg-slate-200  h-[85vh]">
-        <div className="mx-[30px]">
-          <div className="flex justify-between items-center py-4 ">
+        <div className="mx-[30px] flex flex-col h-full">
+          <div className="flex items-center justify-between py-4 ">
             <p className="font-bold text-2xl">Dashboard</p>
-            <div className="flex gap-4 ">
+            <div className="flex gap-4  ">
               <div className="flex justify-between gap-2 cursor-pointer px-2 py-4 rounded-3xl bg-white hover:bg-slate-100">
                 <svg
                   width="24"
@@ -84,13 +86,16 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-         
-          <div className="flex mt-2 gap-4">
-            <div className="w-[700px] bg-white h-[270px]"></div>
-            <div className="flex-1 bg-white h-[270px]"></div>
+
+          <div className="flex mt-2 gap-4 ">
+            <div className="w-[700px] bg-white h-[200px]"></div>
+            <div className="flex-1 bg-white h-[200px]"></div>
           </div>
-          <div className="flex mt-2 gap-4">
-            <Maps/>
+          <div className="flex mt-2 gap-4 flex-1">
+            <div className='flex-1'>
+              {showMap && <MapWithNoSSR />}
+        
+            </div>
             <p>2</p>
           </div>
         </div>
