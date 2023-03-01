@@ -4,7 +4,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
- 
+
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
@@ -18,11 +18,25 @@ module.exports = {
         "divider-color": "#e4e4e4",
         "nd-text-color": "#808191",
       },
-      fontFamily: { poppins: "Poppins", "bold-37": "Manrope" },
+      fontFamily: {
+        poppins: "Poppins",
+        manrope: "Manrope",
+      },
       borderRadius: { base: "10px" },
+      screens: {
+      'sm': '576px',
+      // => @media (min-width: 576px) { ... }
+      '2sm':'760px',
+
+      'md': '960px',
+      // => @media (min-width: 960px) { ... }
+
+      'lg': '1440px',
+      // => @media (min-width: 1440px) { ... }
     },
-    fontSize: { sm: "14px", base: "16px", lg: "37px" },
   },
 
   plugins: [],
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+}
 }
