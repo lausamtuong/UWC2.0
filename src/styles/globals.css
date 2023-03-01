@@ -5,7 +5,17 @@
 @tailwind components;
 @tailwind utilities;
 @layer components {
- 
+  ::-webkit-scrollbar{
+    width: 5px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: rgb(179, 179, 179);
+}
   .tooltip {
     position: relative;
   }
@@ -65,7 +75,7 @@
   }
   .sidebar__menu__item {
     display: flex;
-  
+
     align-items: center;
     place-content: flex-start;
     padding: 1rem 3rem;

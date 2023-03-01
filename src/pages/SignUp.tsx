@@ -43,7 +43,7 @@ export default function SignUp() {
                 className="text-[16px] font-manrope font-regular bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               ></input>
             </div>
-            <button className="my-[20px] font-manrope text-[16px] font-semibold text-center w-full bg-[#475BE8] text-[#FCFCFC] rounded-[10px] py-[10px] border-none">Login </button>
+            <button className="my-[20px] font-manrope text-[16px] font-semibold text-center w-full bg-[#475BE8] text-[#FCFCFC] rounded-[10px] py-[10px] border-none">Sign up</button>
             <button className="flex items-center justify-center font-manrope text-[16px] font-semibold text-center w-full bg-[#FCFCFC] text-[#11142D] rounded-[10px] py-[10px] border-2 border-gray-200">
               <img src="/google.svg" className="mr-[10px]"/>
               <p>Sign Up with Google</p>
