@@ -206,6 +206,7 @@ const Sidebar = () => {
   const sidebarRef = useRef();
   const indicatorRef = useRef();
   const location = useRouter();
+  // console.log(sidebarNavItems[0].to)
 
   useEffect(() => {
     setTimeout(() => {

@@ -1,8 +1,9 @@
 import { Input } from "@nextui-org/react";
-export const Header = () => {
+
+const Header = () => {
   return (
     <div className="flex justify-between gap-3 mx-[20px] my-[10px] items-center">
-      <div className="flex flex-col md:flex-row  py-2 gap-2   px-4 cursor-pointer rounded-xl hover:bg-blue-50 ">
+      <div className="flex flex-col md:flex-row  py-2 gap-2 px-4 cursor-pointer rounded-xl hover:bg-blue-50 ">
         {" "}
         <svg
           width="39"
@@ -90,3 +91,5 @@ export const Header = () => {
     </div>
   );
 };
+
+export default Header;
