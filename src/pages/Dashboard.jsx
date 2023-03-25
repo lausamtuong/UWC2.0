@@ -1,7 +1,12 @@
 import Header from "@/Components/Header";
 import Sidebar from "@/Components/Sidebar";
+import DashboardChart from "@/Components/DashboardChart";
+import ProgressDashboard from "@/Components/Progress";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { Button, Grid } from "@nextui-org/react";
+import EmployeeCard from "../Components/EmployeeCard";
+import Link from "next/link";
 export default function Dashboard() {
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
@@ -16,9 +21,9 @@ export default function Dashboard() {
     <>
       <Header />
       <Sidebar />
-      <div className="ml-[30px] sm:ml-[250px] bg-slate-200  h-[85vh]">
+      <div className="ml-[30px] sm:ml-[250px] bg-slate-200  h-[100vh]">
         <div className="mx-[30px] flex flex-col h-full">
-          <div className="flex items-center justify-between py-4 ">
+          <div className="flex items-center justify-between py-2 ">
             <p className="font-bold text-2xl">Dashboard</p>
             <div className="flex gap-4  ">
               <div className="flex justify-between gap-2 cursor-pointer px-2 py-4 rounded-3xl bg-white hover:bg-slate-100">
@@ -88,15 +93,101 @@ export default function Dashboard() {
           </div>
 
           <div className="flex mt-2 gap-4 ">
-            <div className="w-[700px] bg-white h-[200px]"></div>
-            <div className="flex-1 bg-white h-[200px]"></div>
+            <div className=" h-[230px] flex gap-4 ">
+              <DashboardChart
+                title="Routes"
+                color="rgb(51,213,131)"
+                text="rgb(51,213,131)"
+                data={[12, 14]}
+              ></DashboardChart>
+              <DashboardChart
+                title="Employees"
+                color="rgb(11,0,255)"
+                text="blue"
+                data={[100, 12]}
+              ></DashboardChart>
+              <DashboardChart
+                title="MCPs"
+                color="rgb(255,33,0)"
+                text="red"
+                data={[20, 12]}
+              ></DashboardChart>
+            </div>
+            <div className="flex-1 bg-white h-full px-2 py-2 rounded-xl">
+              <div className="flex justify-between">
+                <p className="font-bold text-xl text-gray-400">MCPs status</p>
+                <div className="">Area</div>
+              </div>
+              <Grid.Container sm={18} gap={1}>
+                <Grid>
+                  <ProgressDashboard
+                    value={23}
+                    color="success"
+                    title="Chợ Bến Thành"
+                  />
+                  <ProgressDashboard
+                    value={40}
+                    color="success"
+                    title="48 Cô Giang, Quận 1"
+                  />
+                  <ProgressDashboard
+                    value={50}
+                    color="warning"
+                    title="Đinh Tiên Hoàng, Quận 1"
+                  />
+                  <ProgressDashboard
+                    value={90}
+                    color="error"
+                    title="Lê Thánh Tôn, Quận 7"
+                  />
+                  <ProgressDashboard
+                    value={80}
+                    color="error"
+                    title="Trường Sa, Quận Bình Thạnh"
+                  />
+                </Grid>
+              </Grid.Container>
+            </div>
           </div>
           <div className="flex mt-2 gap-4 flex-1">
-            <div className='flex-1'>
-              {showMap && <MapWithNoSSR />}
-        
+            <div className="flex-1">{showMap && <MapWithNoSSR />}</div>
+            <div className="rounded-xl h-full min-w-[380px] px-2 py-1 bg-white flex flex-col gap-1">
+              <div className="flex justify-between">
+                <h2 className="text-gray-400 font-bold text-xl mb-[10px]">
+                  Employees
+                </h2>
+                <Link href={"/Employee"}>
+                  <Button flat color="primary" auto>
+                    View all
+                  </Button>
+                </Link>
+              </div>
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="done"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="working"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="done"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="working"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="working"
+              />
             </div>
-            <p>2</p>
           </div>
         </div>
       </div>

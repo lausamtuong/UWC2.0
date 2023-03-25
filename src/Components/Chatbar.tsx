@@ -82,7 +82,7 @@ const Chatbar = ({handleActiveTab}) => {
   const [activeTab, setActiveTab] = useState(0);
   const tabListRef = useRef(null);
 
-  const handleTabClick = (index) => {
+  const handleTabClick = (index:number) => {
     setActiveTab(index);
     // router.push(`/Message/${index + 1}`);
   };

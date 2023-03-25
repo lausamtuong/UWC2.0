@@ -2,7 +2,7 @@ import { Input } from "@nextui-org/react";
 
 const Header = () => {
   return (
-    <div className="flex justify-between gap-3 mx-[20px] my-[10px] items-center">
+    <div className="flex justify-between gap-3 mx-[20px] my-[0px] items-center">
       <div className="flex flex-col md:flex-row  py-2 gap-2 px-4 cursor-pointer rounded-xl hover:bg-blue-50 ">
         {" "}
         <svg
