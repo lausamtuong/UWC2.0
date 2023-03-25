@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 interface Iprops {
   title: string;
-  color:string;
-  text:string;
-  data:number[]
+  color: string;
+  text: string;
+  data: number[];
 }
 const DashboardChart = (props: Iprops) => {
   const chartRef = useRef();
+
   let myChart;
   useEffect(() => {
     const myChartRef = chartRef?.current?.getContext("2d");
@@ -24,7 +25,6 @@ const DashboardChart = (props: Iprops) => {
             backgroundColor: [props.color, "rgb(220,220,220)"],
             hoverOffset: 4,
             borderWidth: 0,
-          
           },
         ],
       },
@@ -32,13 +32,15 @@ const DashboardChart = (props: Iprops) => {
         responsive: true,
         maintainAspectRatio: false,
         cutout: 28,
-       
+      
       },
     });
+
     return () => {
       myChart.destroy();
     };
   }, []);
+
   return (
     <div className="flex flex-col rounded-xl items-center justify-center w-48 bg-white h-full">
       <div className="text-xl text-gray-400 font-bold">{props.title} </div>
@@ -46,15 +48,21 @@ const DashboardChart = (props: Iprops) => {
         <canvas id="myChart" ref={chartRef} style={{ width: "100px" }} />
       </div>
       <div className="flex justify-around w-full my-2">
-        
-        <div className={`text-[${props.text}] text-${props.text}  px-4 bg-[#b0fad5] rounded-2xl font-bold flex gap-2 items-center` }>
-        <span className="font-bold text-[30px] pb-[17px] leading-[0px]">.</span>
-        <span className="font-bold ">Assigned</span>
-            </div>
+        <div
+          className={`text-[${props.text}]  px-4 bg-[#b0fad5] rounded-2xl font-bold flex gap-2 items-center`}
+          style={{color:props.text}}
+        >
+          <span className="font-bold text-[30px] pb-[17px] leading-[0px]">
+            .
+          </span>
+          <span className={`font-bold `}>Assigned</span>
+        </div>
         <div className="font-bold">{props.data[0]}</div>
       </div>
       <div className="flex justify-around w-full">
-        <div className="px-4 text-gray-400 font-bold bg-[#b0fad5] rounded-2xl ">Not Assigned</div>
+        <div className="px-4 text-gray-400 font-bold bg-[#b0fad5] rounded-2xl ">
+          Not Assigned
+        </div>
         <div className="font-bold">{props.data[1]}</div>
       </div>
     </div>
