@@ -1,7 +1,10 @@
 import Header from "@/Components/Header";
 import Sidebar from "@/Components/Sidebar";
+import DashboardChart from "@/Components/DashboardChart";
+import ProgressDashboard from "@/Components/Progress";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { Progress, Grid } from "@nextui-org/react";
 export default function Dashboard() {
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
@@ -88,14 +91,64 @@ export default function Dashboard() {
           </div>
 
           <div className="flex mt-2 gap-4 ">
-            <div className="w-[700px] bg-white h-[200px]"></div>
-            <div className="flex-1 bg-white h-[200px]"></div>
+            <div className=" h-[230px] flex gap-4">
+              <DashboardChart
+                title="Routes"
+                color="rgb(51,213,131)"
+                text="emerald-400"
+                data={[12,14]}
+              ></DashboardChart>
+              <DashboardChart
+                title="Employees"
+                color="rgb(11,0,255)"
+                text="blue-600"
+                data={[100,12]}
+              ></DashboardChart>
+              <DashboardChart
+                title="MCPs"
+                color="rgb(255,33,0)"
+                text="red-600"
+                data={[20,12]}
+              ></DashboardChart>
+            </div>
+            <div className="flex-1 bg-white h-full px-2 py-2 ">
+              <div className="flex justify-between">
+                <p className="font-bold text-xl text-gray-400">MCPs status</p>
+                <div className="">Area</div>
+              </div>
+              <Grid.Container sm={18} gap={1}>
+                <Grid>
+                  <ProgressDashboard
+                    value={23}
+                    color="success"
+                    title="Chợ Bến Thành"
+                  />
+                  <ProgressDashboard
+                    value={40}
+                    color="success"
+                    title="48 Cô Giang, Quận 1"
+                  />
+                  <ProgressDashboard
+                    value={50}
+                    color="warning"
+                    title="Đinh Tiên Hoàng, Quận 1"
+                  />
+                  <ProgressDashboard
+                    value={90}
+                    color="error"
+                    title="Lê Thánh Tôn, Quận 7"
+                  />
+                  <ProgressDashboard
+                    value={80}
+                    color="error"
+                    title="Trường Sa, Quận Bình Thạnh"
+                  />
+                </Grid>
+              </Grid.Container>
+            </div>
           </div>
           <div className="flex mt-2 gap-4 flex-1">
-            <div className='flex-1'>
-              {showMap && <MapWithNoSSR />}
-        
-            </div>
+            <div className="flex-1">{showMap && <MapWithNoSSR />}</div>
             <p>2</p>
           </div>
         </div>
