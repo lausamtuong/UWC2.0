@@ -151,7 +151,7 @@ export default function Dashboard() {
           </div>
           <div className="flex mt-2 gap-4 flex-1">
             <div className="flex-1">{showMap && <MapWithNoSSR />}</div>
-            <div className="rounded-xl h-full min-w-[380px] px-2 py-1 bg-white flex flex-col gap-1">
+            <div className="rounded-xl h-full min-w-[380px] px-6 py-4 bg-white flex flex-col gap-1">
               <div className="flex justify-between">
                 <h2 className="text-gray-400 font-bold text-xl mb-[10px]">
                   Employees
