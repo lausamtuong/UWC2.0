@@ -1,9 +1,111 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+  ::-webkit-scrollbar{
+    width: 5px;
+}
 
-body {
-  @apply leading-[normal] m-0;
+::-webkit-scrollbar-track{
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: rgb(179, 179, 179);
+}
+  .tooltip {
+    position: relative;
+  }
+  .tooltipText {
+    position: absolute;
+    content: "";
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 500ms ease;
+    width: 100%;
+    background: #daf4f1;
+    left: -0px;
+    bottom: -57px;
+  }
+  .tooltipText::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -13px;
+
+    border: 15px solid;
+    border-color: #daf4f1 #0000 #0000 #0000;
+    transform: translateX(-50%);
+  }
+  .tooltipText::after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: 0;
+    width: 200px;
+    height: 20px;
+  }
+  .tooltip:hover .tooltipText {
+    visibility: visible;
+    opacity: 1;
+  }
+  .sidebar {
+    position: fixed;
+
+    top: 110px;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #fff;
+  }
+  .sidebar__logo {
+    display: grid;
+    place-items: center;
+    height: 120px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: "Mochiy Pop P one", sans-serif;
+  }
+
+  .sidebar__menu {
+    position: relative;
+  }
+  .sidebar__menu__item {
+    display: flex;
+
+    align-items: center;
+    place-content: flex-start;
+    padding: 1rem 3rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #927d7d;
+    transition: color 0.3s ease-in-out;
+    gap:20px;
+  }
+  .sidebar__menu.active {
+    color: #fff;
+  }
+
+  .sidebar__menu__icon {
+    margin-right: 1rem;
+  }
+  .sidebar__menu__icon i {
+    font-size: 1.75rem;
+  }
+
+  .sidebar__menu__indicator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: calc(100% - 40px);
+    border-radius: 10px;
+    background-color: #308efe;
+    z-index: -1;
+    transform: translateX(-50%);
+    transition: 0.3s ease-in-out;
+  }
+  
 }
