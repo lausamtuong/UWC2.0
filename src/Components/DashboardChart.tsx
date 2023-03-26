@@ -7,38 +7,43 @@ interface Iprops {
   data: number[];
 }
 const DashboardChart = (props: Iprops) => {
-  const chartRef = useRef();
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
 
-  let myChart;
+  let myChart: any;
   useEffect(() => {
-    const myChartRef = chartRef?.current?.getContext("2d");
-    if (typeof myChart !== "undefined") {
-      myChart.destroy();
-    }
-    myChart = new Chart(myChartRef, {
-      type: "doughnut",
-      data: {
-        datasets: [
-          {
-            label: "values",
-            data: props.data,
-            backgroundColor: [props.color, "rgb(220,220,220)"],
-            hoverOffset: 4,
-            borderWidth: 0,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: 28,
-      
-      },
-    });
+    if (chartRef.current) {
+      const myChartRef = chartRef.current.getContext("2d");
+      if (!myChartRef) {
+        throw new Error("Could not get chart context");
+      }
+      if (typeof myChart !== "undefined") {
+        myChart.destroy();
+      }
+      myChart = new Chart(myChartRef, {
+        type: "doughnut",
+        data: {
+          datasets: [
+            {
+              label: "values",
+              data: props.data,
+              backgroundColor: [props.color, "rgb(220,220,220)"],
+              hoverOffset: 4,
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: 28,
+          
+        },
+      });
 
-    return () => {
-      myChart.destroy();
-    };
+      return () => {
+        myChart.destroy();
+      };
+    }
   }, []);
 
   return (
@@ -50,7 +55,7 @@ const DashboardChart = (props: Iprops) => {
       <div className="flex justify-around w-full my-2">
         <div
           className={`text-[${props.text}]  px-4 bg-[#b0fad5] rounded-2xl font-bold flex gap-2 items-center`}
-          style={{color:props.text}}
+          style={{ color: props.text }}
         >
           <span className="font-bold text-[30px] pb-[17px] leading-[0px]">
             .

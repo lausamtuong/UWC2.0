@@ -2,15 +2,40 @@ import Header from "@/Components/Header";
 import Sidebar from "@/Components/Sidebar";
 import DashboardChart from "@/Components/DashboardChart";
 import ProgressDashboard from "@/Components/Progress";
+import ListJanitorAssign from "@/Components/ListJanitorAssign";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { Button, Grid } from "@nextui-org/react";
+import {
+  Button,
+  Grid,
+  Modal,
+  Pagination,
+  Dropdown,
+  Textarea,
+} from "@nextui-org/react";
 import EmployeeCard from "../Components/EmployeeCard";
 import Link from "next/link";
 export default function Dashboard() {
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
   });
+  const [assignTask, setAssignTask] = useState(false);
+  const [janitor, setJanitor] = useState(0);
+  const [collector, setCollector] = useState(false);
+  const handleAssignTask = () => setAssignTask(true);
+  const closeHandler = () => {
+    setAssignTask(false);
+    setJanitor(0);
+    setCollector(0);
+  };
+  const handleJanitor = () => {
+    setJanitor(1);
+    // setAssignTask(false);
+  };
+  const handleCollector = () => {
+    setCollector(1);
+    // setAssignTask(false);
+  };
   const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
@@ -58,7 +83,10 @@ export default function Dashboard() {
                 <p>Create New Route</p>
               </div>
 
-              <div className="flex justify-between gap-2 cursor-pointer px-2 py-4 rounded-3xl bg-white hover:bg-slate-100">
+              <div
+                onClick={handleAssignTask}
+                className="flex justify-between gap-2 cursor-pointer px-2 py-4 rounded-3xl bg-white hover:bg-slate-100"
+              >
                 <svg
                   width="24"
                   height="24"
@@ -116,7 +144,25 @@ export default function Dashboard() {
             <div className="flex-1 bg-white h-full px-2 py-2 rounded-xl">
               <div className="flex justify-between">
                 <p className="font-bold text-xl text-gray-400">MCPs status</p>
-                <div className="">Area</div>
+                <Dropdown>
+                    <Dropdown.Button
+                      color={"primary"}
+                      flat
+                      className="flex gap-4 w-[10px]"
+                    
+                    >
+                      <span className="text-black"> Khu vực</span>
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                      color={"primary"}
+                      variant="light"
+                      aria-label="Actions"
+                    >
+                      <Dropdown.Item key="new">Quận 1</Dropdown.Item>
+                      <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
+                      <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
               </div>
               <Grid.Container sm={18} gap={1}>
                 <Grid>
@@ -151,7 +197,7 @@ export default function Dashboard() {
           </div>
           <div className="flex mt-2 gap-4 flex-1">
             <div className="flex-1">{showMap && <MapWithNoSSR />}</div>
-            <div className="rounded-xl h-full min-w-[380px] px-2 py-1 bg-white flex flex-col gap-1">
+            <div className="rounded-xl h-full min-w-[380px] px-6 py-4 bg-white flex flex-col gap-1">
               <div className="flex justify-between">
                 <h2 className="text-gray-400 font-bold text-xl mb-[10px]">
                   Employees
@@ -191,6 +237,297 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      <Modal
+        noPadding
+        open={assignTask}
+        onClose={closeHandler}
+        css={{ background: "#cccccc" }}
+      >
+        <Modal.Body>
+          <div className="py-10 flex flex-col items-center ">
+            <div className="font-bold text-4xl pb-14">ASSIGN TASK</div>
+            <div className="flex justify-center gap-8 pb-8">
+              {" "}
+              <Button
+                css={{ width: "150px" }}
+                onPress={handleJanitor}
+                color="primary"
+                auto
+              >
+                Janitor
+              </Button>
+              <Button
+                flat
+                onPress={handleCollector}
+                css={{ width: "150px" }}
+                color="primary"
+                auto
+              >
+                Collector
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {janitor == 1 && (
+        <Modal noPadding open={true} onClose={closeHandler} width="600px">
+          <Modal.Body>
+            <div className="flex flex-col items-center py-10 px-12">
+              <div className="font-bold text-2xl mb-10">
+                CHỌN DANH SÁCH JANITORS
+              </div>
+              <div className="min-w-[340px]">
+                <ListJanitorAssign />
+              </div>
+              <div className=" mt-3 ">
+                <Pagination total={20} initialPage={1} size="xs" />
+              </div>
+              <div className="flex w-full justify-end gap-5 mt-5">
+                <Button
+                  onPress={closeHandler}
+                  flat
+                  css={{ width: "120px" }}
+                  color="primary"
+                  auto
+                >
+                  Hủy
+                </Button>
+                <Button
+                  css={{ width: "120px" }}
+                  onPress={() => setJanitor(2)}
+                  color="primary"
+                  auto
+                >
+                  Tiếp tục
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {janitor == 2 && (
+        <Modal noPadding open={true} onClose={closeHandler} width="660px">
+          <Modal.Body>
+            <div className="flex flex-col gap-4 justify-start py-10  px-6">
+              <div className="font-bold text-4xl">ASSIGN TASK JANITOR</div>
+              <div className="flex flex-wrap gap-[30px] ">
+                <div className="flex flex-col gap-2  w-[250px] max-w-[240px]">
+                  <p>
+                    Chọn ca <span className="text-red-600">*</span>
+                  </p>
+                  <Dropdown>
+                    <Dropdown.Button
+                      color={"default"}
+                      flat
+                      className="flex gap-32 "
+                    >
+                      <span className="text-black">Chọn ca</span>
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                      color={"primary"}
+                      variant="light"
+                      aria-label="Actions"
+                    >
+                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                          <div className="div">Ca 1</div>
+                          <div className="div">7h-11 am</div>
+                          <div className="div">Thứ 2,4,6</div>
+                        </div></Dropdown.Item>
+                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                          <div className="div">Ca 2</div>
+                          <div className="div">1h-5h pm</div>
+                          <div className="div">Thứ 2,4,6</div>
+                        </div></Dropdown.Item>
+                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                          <div className="div">Ca 1</div>
+                          <div className="div">7h-11 am</div>
+                          <div className="div">Thứ 3,5,7</div>
+                        </div></Dropdown.Item>
+                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                          <div className="div">Ca 2</div>
+                          <div className="div">1h-5h pm</div>
+                          <div className="div">Thứ 3,5,7</div>
+                        </div></Dropdown.Item>
+              
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <div className="flex flex-col gap-2 w-[250px] max-w-[250px]">
+                  <p>
+                    Chọn nơi làm việc (MCPs) <span className="text-red-600">*</span>
+                  </p>
+                  <Dropdown>
+                    <Dropdown.Button
+                      color={"primary"}
+                      flat
+                      className="flex gap-32 "
+                    >
+                      <span className="text-black"> Chọn nơi làm việc (MCPs)</span>
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                      color={"primary"}
+                      variant="light"
+                      aria-label="Actions"
+                    >
+                      <Dropdown.Item key="new">Quận 1</Dropdown.Item>
+                      <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
+                      <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <div className="flex flex-col gap-2 w-[250px] max-w-[250px]">
+                  <p>
+                    Chọn xe đẩy <span className="text-red-600">*</span>
+                  </p>
+                  <Dropdown>
+                    <Dropdown.Button
+                      color={"primary"}
+                      flat
+                      className="flex gap-32 "
+                    >
+                      <span className="text-black"> Chọn xe đẩy</span>
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                      color={"primary"}
+                      variant="light"
+                      aria-label="Actions"
+                    >
+                      <Dropdown.Item key="new">Troller 1</Dropdown.Item>
+                      <Dropdown.Item key="copy">Troller 2</Dropdown.Item>
+                      <Dropdown.Item key="edit">Troller 3</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <div className="w-[400px]">
+                  <p className="mb-3">Ghi chú (nếu có) </p>
+                  <Textarea
+                    placeholder="Default Textarea"
+                    css={{ width: "600px" }}
+                  />
+                </div>
+                <div className="flex w-full justify-end gap-5 ">
+                  <Button
+                    onPress={closeHandler}
+                    flat
+                    css={{ width: "120px" }}
+                    color="primary"
+                    auto
+                  >
+                    Hủy bỏ
+                  </Button>
+                  <Button
+                    css={{ width: "120px" }}
+                    onPress={() => setJanitor(2)}
+                    color="primary"
+                    auto
+                  >
+                    Xác nhận
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {collector == 1 && (
+        <Modal noPadding open={true} onClose={closeHandler} width="600px">
+          <Modal.Body>
+            <div className="flex flex-col items-center py-10 px-12">
+              <div className="font-bold text-2xl mb-10">
+                CHỌN DANH SÁCH COLLECTOR
+              </div>
+              <div className="min-w-[340px]">
+                <ListJanitorAssign />
+              </div>
+              <div className=" mt-3 ">
+                <Pagination total={20} initialPage={1} size="xs" />
+              </div>
+              <div className="flex w-full justify-end gap-5 mt-5">
+                <Button
+                  onPress={closeHandler}
+                  flat
+                  css={{ width: "120px" }}
+                  color="primary"
+                  auto
+                >
+                  Hủy
+                </Button>
+                <Button
+                  css={{ width: "120px" }}
+                  onPress={() => setCollector(2)}
+                  color="primary"
+                  auto
+                >
+                  Tiếp tục
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {collector == 2 && (
+        <Modal noPadding open={true} onClose={closeHandler} width="660px">
+          <Modal.Body>
+            <div className="flex flex-col gap-4 justify-start py-10  px-6">
+              <div className="font-bold text-4xl">ASSIGN TASK COLLECTOR</div>
+              <div className="flex flex-wrap gap-[30px] ">
+                <div className="flex flex-col gap-2  w-[250px] max-w-[240px]">
+                  <p>
+                    Chọn tuyến đường <span className="text-red-600">*</span>
+                  </p>
+                  <Dropdown>
+                    <Dropdown.Button
+                      color={"default"}
+                      flat
+                      className="flex gap-32 "
+                    >
+                      <span className="text-black">Chọn tuyến đường</span>
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                      color={"primary"}
+                      variant="light"
+                      aria-label="Actions"
+                    >
+                      <Dropdown.Item key="new">
+                       Router 1
+                      </Dropdown.Item>
+                      <Dropdown.Item key="copy">Router 1</Dropdown.Item>
+                      <Dropdown.Item key="edit">Router 1</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              
+                <div className="w-[400px]">
+                  <p className="mb-3">Ghi chú (nếu có) </p>
+                  <Textarea
+                    placeholder="Default Textarea"
+                    css={{ width: "600px" }}
+                  />
+                </div>
+                <div className="flex w-full justify-end gap-5 ">
+                  <Button
+                    onPress={closeHandler}
+                    flat
+                    css={{ width: "120px" }}
+                    color="primary"
+                    auto
+                  >
+                    Hủy bỏ
+                  </Button>
+                  <Button
+                    css={{ width: "120px" }}
+                    
+                    color="primary"
+                    auto
+                  >
+                    Xác nhận
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
     </>
   );
 }
