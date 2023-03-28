@@ -3,25 +3,25 @@ import { useQuery } from "@tanstack/react-query";
 // import axios from "axios"
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPass] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
-  console.log(email);
-  console.log(password);
-  const handleSignUp = async () => {
-    const res = await fetch("api/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-  };
+  // const [email, setEmail] = useState("");
+  // const [password, setPass] = useState("");
+  // const [confirmPass, setConfirmPass] = useState("");
+  // console.log(email);
+  // console.log(password);
+  // const handleSignUp = async () => {
+  //   const res = await fetch("api/user", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       email: email,
+  //       password: password,
+  //     }),
+  //   });
+  //   const data = await res.json();
+  //   console.log(data);
+  // };
 
   return (
     <div className="grid grid-cols-2 w-screen">
