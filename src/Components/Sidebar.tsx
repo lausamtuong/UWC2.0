@@ -231,6 +231,7 @@ const Sidebar = () => {
     <div className="sidebar hidden sm:block top-0">
       <div className="flex flex-col justify-center gap-2 md:flex-row  py-2 pr-4 cursor-pointer rounded-xl hover:bg-blue-50 ">
         {" "}
+        
         <svg
           width="39"
           height="36"
