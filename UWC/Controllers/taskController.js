@@ -1,10 +1,10 @@
 const fs = require("fs");
-const dataArray = require("../Data/TaskCollector.json");
 exports.createTask = async (req, res) => {
- // Parse the JSON data into a JavaScript object
-  //Add the new object to the array
-  dataArray.push(req.body.data);
-  fs.writeFile("./Data/TaskCollector.json", JSON.stringify(dataArray), (err) => {
+  const jsonData = fs.readFileSync('./Data/TaskJanitor.json', 'utf-8');
+  const data = JSON.parse(jsonData);
+  const newArray = data.concat(req.body)
+  console.log(newArray)
+  fs.writeFileSync("./Data/TaskJanitor.json", JSON.stringify(newArray), (err) => {
     if (err) {
       console.error(err);
       return;
@@ -12,5 +12,6 @@ exports.createTask = async (req, res) => {
     console.log("Data written to file");
   });
   console.log("Data written to file");
-  res.status(201).json(dataArray);
+ // res.status(201).json(dataArray);
 };
+

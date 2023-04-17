@@ -1,12 +1,1 @@
-[
-  {
-    "id": "123",
-    "name": "Dang Gia Thinh",
-    "address": "KTX Khu A",
-    "route": "ktx Khu A",
-    "note": ""
-  },
-  null,
-  null,
-  null
-]
+[{"id":"123","name":"Dang Gia Thinh","address":"KTX Khu A","route":"ktx Khu A","note":""},null,null,null,null,null,null,null]
