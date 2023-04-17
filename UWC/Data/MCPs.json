@@ -1,0 +1,8 @@
+[
+    { "id": "mcp0001", "area": "Quận 1", "capacity": "66%", "janitor": [] },
+    { "id": "mcp0002", "area": "Quận 2", "capacity": "22%", "janitor": [] },
+    { "id": "mcp0003", "area": "Quận 3", "capacity": "0%", "janitor": [] },
+    { "id": "mcp0004", "area": "Quận 5", "capacity": "100%", "janitor": [] },
+    { "id": "mcp0005", "area": "Quận Bình Thạnh", "capacity": "26%", "janitor": [] },
+    { "id": "mcp0006", "area": "Quận Thủ Đức", "capacity": "86%", "janitor": [] }
+]
