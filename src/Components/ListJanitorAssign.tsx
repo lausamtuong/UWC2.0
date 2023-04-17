@@ -24,6 +24,7 @@ const rows = [
   { id: 0, IdName: "John Doe", address: "john.doe@example.com" },
   { id: 1, IdName: "Jane Smith", address: "jane.smith@example.com" },
   { id: 2, IdName: "Bob Johnson", address: "bob.johnson@example.com" },
+  { id: 3, IdName: "Kyle Walker", address: "kyle.walker@example.com" },
 ];
 const ListJanitorAssign = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);

@@ -20,11 +20,14 @@ export default function Dashboard() {
     ssr: false,
   });
   const [assignTask, setAssignTask] = useState(false);
+  const [route, setRoute] = useState(false);
   const [janitor, setJanitor] = useState(0);
   const [collector, setCollector] = useState(false);
   const handleAssignTask = () => setAssignTask(true);
+  const handleRoute = () => setRoute(true);
   const closeHandler = () => {
     setAssignTask(false);
+    setRoute(false);
     setJanitor(0);
     setCollector(0);
   };
@@ -37,7 +40,6 @@ export default function Dashboard() {
     // setAssignTask(false);
   };
   const [showMap, setShowMap] = useState(false);
-
   useEffect(() => {
     setShowMap(true);
   }, []);
@@ -51,7 +53,10 @@ export default function Dashboard() {
           <div className="flex items-center justify-between py-2 ">
             <p className="font-bold text-2xl">Dashboard</p>
             <div className="flex gap-4  ">
-              <div className="flex justify-between gap-2 cursor-pointer px-2 py-4 rounded-3xl bg-white hover:bg-slate-100">
+              <div
+                onClick={handleRoute}
+                className="flex justify-between gap-2 cursor-pointer px-2 py-4 rounded-3xl bg-white hover:bg-slate-100"
+              >
                 <svg
                   width="24"
                   height="24"
@@ -145,24 +150,23 @@ export default function Dashboard() {
               <div className="flex justify-between">
                 <p className="font-bold text-xl text-gray-400">MCPs status</p>
                 <Dropdown>
-                    <Dropdown.Button
-                      color={"primary"}
-                      flat
-                      className="flex gap-4 w-[10px]"
-                    
-                    >
-                      <span className="text-black"> Khu vực</span>
-                    </Dropdown.Button>
-                    <Dropdown.Menu
-                      color={"primary"}
-                      variant="light"
-                      aria-label="Actions"
-                    >
-                      <Dropdown.Item key="new">Quận 1</Dropdown.Item>
-                      <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
-                      <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <Dropdown.Button
+                    color={"primary"}
+                    flat
+                    className="flex gap-4 w-[10px]"
+                  >
+                    <span className="text-black"> Khu vực</span>
+                  </Dropdown.Button>
+                  <Dropdown.Menu
+                    color={"primary"}
+                    variant="light"
+                    aria-label="Actions"
+                  >
+                    <Dropdown.Item key="new">Quận 1</Dropdown.Item>
+                    <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
+                    <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
               <Grid.Container sm={18} gap={1}>
                 <Grid>
@@ -237,6 +241,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+{/* modal for assign task*/}
       <Modal
         noPadding
         open={assignTask}
@@ -328,33 +333,45 @@ export default function Dashboard() {
                       variant="light"
                       aria-label="Actions"
                     >
-                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                      <Dropdown.Item key="new">
+                        {" "}
+                        <div className="flex justify-between">
                           <div className="div">Ca 1</div>
                           <div className="div">7h-11 am</div>
                           <div className="div">Thứ 2,4,6</div>
-                        </div></Dropdown.Item>
-                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                        </div>
+                      </Dropdown.Item>
+                      <Dropdown.Item key="new">
+                        {" "}
+                        <div className="flex justify-between">
                           <div className="div">Ca 2</div>
                           <div className="div">1h-5h pm</div>
                           <div className="div">Thứ 2,4,6</div>
-                        </div></Dropdown.Item>
-                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                        </div>
+                      </Dropdown.Item>
+                      <Dropdown.Item key="new">
+                        {" "}
+                        <div className="flex justify-between">
                           <div className="div">Ca 1</div>
                           <div className="div">7h-11 am</div>
                           <div className="div">Thứ 3,5,7</div>
-                        </div></Dropdown.Item>
-                      <Dropdown.Item key="new"> <div className="flex justify-between">
+                        </div>
+                      </Dropdown.Item>
+                      <Dropdown.Item key="new">
+                        {" "}
+                        <div className="flex justify-between">
                           <div className="div">Ca 2</div>
                           <div className="div">1h-5h pm</div>
                           <div className="div">Thứ 3,5,7</div>
-                        </div></Dropdown.Item>
-              
+                        </div>
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
                 <div className="flex flex-col gap-2 w-[250px] max-w-[250px]">
                   <p>
-                    Chọn nơi làm việc (MCPs) <span className="text-red-600">*</span>
+                    Chọn nơi làm việc (MCPs){" "}
+                    <span className="text-red-600">*</span>
                   </p>
                   <Dropdown>
                     <Dropdown.Button
@@ -362,7 +379,10 @@ export default function Dashboard() {
                       flat
                       className="flex gap-32 "
                     >
-                      <span className="text-black"> Chọn nơi làm việc (MCPs)</span>
+                      <span className="text-black">
+                        {" "}
+                        Chọn nơi làm việc (MCPs)
+                      </span>
                     </Dropdown.Button>
                     <Dropdown.Menu
                       color={"primary"}
@@ -488,15 +508,13 @@ export default function Dashboard() {
                       variant="light"
                       aria-label="Actions"
                     >
-                      <Dropdown.Item key="new">
-                       Router 1
-                      </Dropdown.Item>
+                      <Dropdown.Item key="new">Router 1</Dropdown.Item>
                       <Dropdown.Item key="copy">Router 1</Dropdown.Item>
                       <Dropdown.Item key="edit">Router 1</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
-              
+
                 <div className="w-[400px]">
                   <p className="mb-3">Ghi chú (nếu có) </p>
                   <Textarea
@@ -514,12 +532,7 @@ export default function Dashboard() {
                   >
                     Hủy bỏ
                   </Button>
-                  <Button
-                    css={{ width: "120px" }}
-                    
-                    color="primary"
-                    auto
-                  >
+                  <Button css={{ width: "120px" }} color="primary" auto>
                     Xác nhận
                   </Button>
                 </div>
@@ -528,6 +541,86 @@ export default function Dashboard() {
           </Modal.Body>
         </Modal>
       )}
+{/* modal for create new route */}
+      <Modal
+        noPadding
+        open={route}
+        onClose={closeHandler}
+        css={{ background: "#cccccc" }}
+        width="700px"
+      >
+        <Modal.Body>
+          <div className="py-10  px-6 w-[px]">
+            <h2 className="text-poppins text-[32px]">Tạo tuyến đường mới</h2>
+            <div className="flex justify-between items-end">
+              <div className="flex flex-col gap-2 w-[250px] max-w-[250px]">
+                <p>
+                  Chọn (MCPs) <span className="text-red-600">*</span>
+                </p>
+                <Dropdown>
+                  <Dropdown.Button
+                    color={"primary"}
+                    flat
+                    className="flex gap-32 "
+                  >
+                    <span className="text-black">
+                      {" "}
+                      Chọn nơi làm việc (MCPs)
+                    </span>
+                  </Dropdown.Button>
+                  <Dropdown.Menu
+                    color={"primary"}
+                    variant="light"
+                    aria-label="Actions"
+                  >
+                    <Dropdown.Item key="new">Quận 1</Dropdown.Item>
+                    <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
+                    <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+              <Button
+                css={{ width: "120px" }}
+                // onPress={}
+                color="primary"
+                auto
+              >
+                Generate Route
+              </Button>
+            </div>
+            <div className="mt-[10px]">
+              <p className="text-[14px]">(Số MCPs đã chọn: {}/7)</p>
+            </div>
+            <div className="my-[20px]">
+              <p>
+                {" "}
+                <b>Tuyến đường gợi ý: </b> Deport - MCP1 - MCP3 - MCP2 -MCP4 -
+                MCP5 - MCP 1 (10km)
+              </p>
+            </div>
+            <div className="flex w-full justify-end gap-5 ">
+                  <Button
+                    onPress={closeHandler}
+                    flat
+                    css={{ width: "100px" }}
+                    color="primary"
+                    auto
+                  >
+                    Hủy bỏ
+                  </Button>
+                  <Button
+                    css={{ width: "100px" }}
+                    // onPress={() => setJanitor(2)}
+                    color="primary"
+                    auto
+                  >
+                    Xác nhận
+                  </Button>
+                </div>
+
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
