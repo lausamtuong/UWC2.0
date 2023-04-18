@@ -10,6 +10,7 @@ const DashboardChart = (props: Iprops) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
 
   let myChart: any;
+
   useEffect(() => {
     if (chartRef.current) {
       const myChartRef = chartRef.current.getContext("2d");
@@ -36,7 +37,6 @@ const DashboardChart = (props: Iprops) => {
           responsive: true,
           maintainAspectRatio: false,
           cutout: 28,
-          
         },
       });
 
@@ -44,8 +44,8 @@ const DashboardChart = (props: Iprops) => {
         myChart.destroy();
       };
     }
-  }, []);
-
+  }, [props.data]);
+ 
   return (
     <div className="flex flex-col rounded-xl items-center justify-center w-48 bg-white h-full">
       <div className="text-xl text-gray-400 font-bold">{props.title} </div>

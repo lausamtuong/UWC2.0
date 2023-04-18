@@ -21,6 +21,7 @@ export default function Dashboard() {
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
   });
+  const [click,setClick] = useState(false)
   const [amount, setAmount] = useState({ janitor: 15, collector: 15 });
   const [assignTask, setAssignTask] = useState(false);
   const [scheduleJan, setScheduleJan] = useState("");
@@ -62,6 +63,16 @@ export default function Dashboard() {
   }, []);
   useEffect(() => {
     const idTask = parseInt(Math.random() * 1000);
+    const temp = janTask.map((item) => {
+      return {
+        ...item,
+        idTask: parseInt(idTask),
+        scheduleID: scheduleJan["currentKey"],
+        mcpId: mcp["currentKey"],
+        trollerID: troller["currentKey"],
+        status: "working",
+      };
+    })
     setJanTask(
       janTask.map((item) => {
         return {
@@ -73,17 +84,17 @@ export default function Dashboard() {
           status: "working",
         };
       })
-    );
-    localStorage.setItem("JAN", JSON.stringify(janTask));
+    );  
+    localStorage.setItem("JAN", JSON.stringify(JSON.parse(localStorage.getItem("JAN")||"[]").concat(temp))||"[]");
   }, [troller]);
   const selectedValue = useMemo(
     () =>
       Array.from(scheduleJan)
         .join(scheduleJan === "0001")
-        .replaceAll("0001", "Ca 1 - 2,4,6")
-        .replaceAll("0002", "Ca 2 - 2,4,6")
-        .replaceAll("0003", "Ca 1 - 3,5,7")
-        .replaceAll("0004", "Ca 2 - 3,5,7"),
+        .replace("0001", "Ca 1 - 2,4,6")
+        .replace("0002", "Ca 2 - 2,4,6")
+        .replace("0003", "Ca 1 - 3,5,7")
+        .replace("0004", "Ca 2 - 3,5,7"),
     [scheduleJan]
   );
   //mcp
@@ -91,12 +102,12 @@ export default function Dashboard() {
     () =>
       Array.from(mcp)
         .join(mcp === "mcp0001")
-        .replaceAll("mcp0001", "Quận 1")
-        .replaceAll("mcp0002", "Quận 2")
-        .replaceAll("mcp0003", "Quận 3")
-        .replaceAll("mcp0004", "Quận 5")
-        .replaceAll("mcp0005", "Quận Bình Thạnh")
-        .replaceAll("mcp0006", "Quận Thủ Đức"),
+        .replace("mcp0001", "Quận 1")
+        .replace("mcp0002", "Quận 2")
+        .replace("mcp0003", "Quận 3")
+        .replace("mcp0004", "Quận 5")
+        .replace("mcp0005", "Quận Bình Thạnh")
+        .replace("mcp0006", "Quận Thủ Đức"),
     [mcp]
   );
 
@@ -104,9 +115,9 @@ export default function Dashboard() {
     () =>
       Array.from(troller)
         .join(troller === "troller0001")
-        .replaceAll("troller0001", "Troller 1")
-        .replaceAll("troller0002", "Troller 2")
-        .replaceAll("troller0003", "Troller 3"),
+        .replace("troller0001", "Troller 1")
+        .replace("troller0002", "Troller 2")
+        .replace("troller0003", "Troller 3"),
     [troller]
   );
 
@@ -207,7 +218,7 @@ export default function Dashboard() {
                 title="Janitors"
                 color="rgb(11,0,255)"
                 text="blue"
-                data={[13, 100]}
+                data={[15-amount.janitor, amount.janitor]}
               ></DashboardChart>
               <DashboardChart
                 title="MCPs"
@@ -352,7 +363,7 @@ export default function Dashboard() {
                 CHỌN DANH SÁCH JANITORS
               </div>
               <div className="min-w-[340px]">
-                <ListJanitorAssign />
+                <ListJanitorAssign click={click}/>
               </div>
               <div className=" mt-3 ">
                 {/* <Pagination total={20} initialPage={1} size="xs" /> */}
@@ -370,9 +381,11 @@ export default function Dashboard() {
                 <Button
                   css={{ width: "120px" }}
                   onPress={() => {
-                    setJanTask(JSON.parse(localStorage.getItem("JAN")));
+                    setJanTask(JSON.parse(localStorage.getItem("TEMP_JAN")));
                     setJanitor(2);
+                    setClick(prev=>!prev)
                   }}
+                  
                   color="primary"
                   auto
                 >

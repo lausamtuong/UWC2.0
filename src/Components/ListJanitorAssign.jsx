@@ -1,20 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Avatar, Grid } from "@nextui-org/react";
 
-// interface Column {
-//   key: string;
-//   name: string;
-//   width: number;
-// }
-
-// interface Row {
-//   [key: string]: any;
-// }
-
-// interface Props {
-//   columns: Column[];
-//   rows: Row[];
-// }
 const columns = [
   { key: "IdName", name: "Name & ID", width: 180 },
   { key: "address", name: "Address", width: 200 },
@@ -40,6 +26,17 @@ const ListJanitorAssign = () => {
     { id: 13, name: "LauSamTuong", address: "Quận Bình Tân", status: "None" }, 
     { id: 14, name: "LauSamTuong", address: "Quận Bình Chánh", status: "None" }, 
   ]);
+  useEffect(() => {
+    
+    const arr2=JSON?.parse(localStorage.getItem('JAN'))
+    function filterUniqueObjects(arr1, arr2) {
+      const uniqueArr1 = arr1.filter((obj1) => !arr2.some((obj2) => obj2.id === obj1.id));
+      const uniqueArr2 = arr2.filter((obj2) => !arr1.some((obj1) => obj1.id === obj2.id));
+      return [...uniqueArr1, ...uniqueArr2];
+    }
+    setRows(()=>filterUniqueObjects(rows,arr2))
+
+  }, []);
   const [selectedRows, setSelectedRows] = useState([]);
   const [janList, setJanList] = useState([]);
   function handleRowClick(order) {
@@ -51,20 +48,21 @@ const ListJanitorAssign = () => {
       setJanList(
         janList.filter((selectedIndex, index) => selectedIndex.id !== order)
       );
-     // localStorage.setItem("JAN", JSON.stringify(janList));
+  
       setSelectedRows(
         selectedRows.filter((selectedIndex) => selectedIndex !== order)
       );
     } else {
-      console.log("jan:", janList);
       setSelectedRows([...selectedRows, order]);
       setJanList([...janList, rows[order]]);
     }
+   
   }
-  localStorage.setItem("JAN", JSON.stringify(janList));
+  localStorage.setItem("TEMP_JAN", JSON.stringify(janList)||"[]");
 
-  console.log("select: ", selectedRows);
-  console.log("jan: ", janList);
+
+  
+  
 
   return (
     <table>
