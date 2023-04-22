@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-
+import { Collapse, Text } from "@nextui-org/react";
 import Link from "next/link";
 
 const sidebarNavItems = [
@@ -214,7 +214,7 @@ const Sidebar = () => {
         ".sidebar__menu__item"
       );
       indicatorRef.current.style.height = `${sidebarItem.clientHeight}px`;
-      setStepHeight(sidebarItem.clientHeight);  
+      setStepHeight(sidebarItem.clientHeight);
     }, 50);
   }, []);
 
@@ -229,8 +229,9 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar hidden sm:block top-0">
-        <div className="flex flex-col justify-center gap-2 md:flex-row  py-2 pr-4 cursor-pointer rounded-xl hover:bg-blue-50 ">
+      <div className="flex flex-col justify-center gap-2 md:flex-row  py-2 pr-4 cursor-pointer rounded-xl hover:bg-blue-50 ">
         {" "}
+        
         <svg
           width="39"
           height="36"
@@ -258,24 +259,61 @@ const Sidebar = () => {
             }px)`,
           }}
         ></div>
-        {sidebarNavItems.map((item, index) => (
-          <Link href={item.to} key={index}>
-            <div
-              className={`sidebar__menu__item ${
-                activeIndex === index ? "active" : ""
-              }`}
-            >
-              <div className="sidebar__menu__item__icon">{item.icon}</div>
+        {sidebarNavItems.map((item, index) =>
+          item.display == "MCPs" ? (
+            <Collapse title="MCPs & Routers" divider={false}  css={{paddingRight:"20px",paddingLeft:"60px",fontWeight:"bold",fontSize:"18px",}}>
+               <Link href={item.to} key={index}>
               <div
-                className={`sidebar__menu__item__text text-[18px] ${
-                  activeIndex === index ? "text-black" : " text-zinc-400"
+                className={`sidebar__menu__item ${
+                  activeIndex === index ? "active" : ""
                 }`}
               >
-                {item.display}
+                <div className="sidebar__menu__item__icon">{item.icon}</div>
+                <div
+                  className={`sidebar__menu__item__text text-[18px] ${
+                    activeIndex === index ? "text-black" : " text-zinc-400"
+                  }`}
+                >
+                  {item.display}
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+               <Link href="/Route" key={index}>
+              <div
+                className={`sidebar__menu__item ${
+                  activeIndex === index ? "active" : ""
+                }`}
+              >
+                <div className="sidebar__menu__item__icon">{item.icon}</div>
+                <div
+                  className={`sidebar__menu__item__text text-[18px] ${
+                    activeIndex === index ? "text-black" : " text-zinc-400"
+                  }`}
+                >
+                 Routers
+                </div>
+              </div>
+            </Link>
+            </Collapse>
+          ) : (
+            <Link href={item.to} key={index}>
+              <div
+                className={`sidebar__menu__item ${
+                  activeIndex === index ? "active" : ""
+                }`}
+              >
+                <div className="sidebar__menu__item__icon">{item.icon}</div>
+                <div
+                  className={`sidebar__menu__item__text text-[18px] ${
+                    activeIndex === index ? "text-black" : " text-zinc-400"
+                  }`}
+                >
+                  {item.display}
+                </div>
+              </div>
+            </Link>
+          )
+        )}
       </div>
     </div>
   );

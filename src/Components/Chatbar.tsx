@@ -94,7 +94,7 @@ const Chatbar = ({handleActiveTab}) => {
   console.log(activeTab);
 
   return (
-    <div className="my-[20px] h-[450px] overflow-hidden overflow-y-scroll" ref={tabListRef}>
+    <div className="my-[20px] h-[70vh] overflow-hidden overflow-y-scroll" ref={tabListRef}>
       {chatBarMembers.map((member, index) => (
         <div
           onClick={()=> handleTabClick(index)}
@@ -108,7 +108,7 @@ const Chatbar = ({handleActiveTab}) => {
               <p className="font-normal text-[14px]">{member.message}</p>
             </div>
           </div>
-          <div className={`${activeTab === index ? 'text-white-color': 'text-text-primary-color'} font-manrope font-medium -text[14px]`}>
+          <div className={`${activeTab === index ? 'text-white-color': 'text-text-primary-color'} font-manrope font-medium text-[12px]`}>
             {member.time}
           </div>
         </div>
