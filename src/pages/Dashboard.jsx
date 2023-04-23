@@ -4,6 +4,7 @@ import DashboardChart from "@/Components/DashboardChart";
 import ProgressDashboard from "@/Components/Progress";
 import ListJanitorAssign from "@/Components/ListJanitorAssign";
 import { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import {
   Button,
@@ -18,11 +19,13 @@ import Link from "next/link";
 import axios from "axios";
 
 export default function Dashboard() {
+  const router = useRouter();
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
   });
-  const [click,setClick] = useState(false)
+  const [click, setClick] = useState(false);
   const [amount, setAmount] = useState({ janitor: 15, collector: 15 });
+  const [list, setList] = useState([])
   const [assignTask, setAssignTask] = useState(false);
   const [scheduleJan, setScheduleJan] = useState("");
   const [mcp, setMCP] = useState("");
@@ -30,7 +33,9 @@ export default function Dashboard() {
   const [janTask, setJanTask] = useState([]);
   const [route, setRoute] = useState(false);
   const [janitor, setJanitor] = useState(0);
+  const [mcpRoute, setMcpRoute] = useState([]);
   const [collector, setCollector] = useState(false);
+  const [rest, setRest] = useState([])
   const handleAssignTask = () => setAssignTask(true);
   const handleRoute = () => setRoute(true);
   const closeHandler = () => {
@@ -56,10 +61,20 @@ export default function Dashboard() {
         janitor: amount.janitor - janTask.length,
       };
     });
+    alert("Assign Task thành công!");
+    router.refresh();
   };
   const [showMap, setShowMap] = useState(false);
+
   useEffect(() => {
+    let janTemp = JSON.parse(window.localStorage.getItem("JAN"));
     setShowMap(true);
+    setAmount((state) => {
+      return {
+        ...state,
+        janitor: amount.janitor - janTemp?.length,
+      };
+    });
   }, []);
   useEffect(() => {
     const idTask = parseInt(Math.random() * 1000);
@@ -72,7 +87,7 @@ export default function Dashboard() {
         trollerID: troller["currentKey"],
         status: "working",
       };
-    })
+    });
     setJanTask(
       janTask.map((item) => {
         return {
@@ -84,9 +99,28 @@ export default function Dashboard() {
           status: "working",
         };
       })
-    );  
-    localStorage.setItem("JAN", JSON.stringify(JSON.parse(localStorage.getItem("JAN")||"[]").concat(temp))||"[]");
+    )
+    let temp1 = JSON.parse(localStorage.getItem("JAN_LIST"))
+    let temp2 = JSON.parse(localStorage.getItem("JAN"))
+    setList(
+       temp1.map((item) => {
+        if(temp2.map(obj => {
+          if(obj.id === item.id) return {...item, status: "working"}
+        }) )
+       })
+    )
+    localStorage.setItem(
+      "JAN",
+      JSON.stringify(
+        JSON.parse(localStorage.getItem("JAN") || "[]").concat(temp)
+      ) || "[]"
+    );
   }, [troller]);
+
+  // console.log("asdjhad", JSON.parse(localStorage.getItem("JAN")))
+  console.log("asdjakjshdasdhad", list)
+
+  //timeline dropdown
   const selectedValue = useMemo(
     () =>
       Array.from(scheduleJan)
@@ -97,7 +131,7 @@ export default function Dashboard() {
         .replace("0004", "Ca 2 - 3,5,7"),
     [scheduleJan]
   );
-  //mcp
+  //mcp dropdown
   const mcpValue = useMemo(
     () =>
       Array.from(mcp)
@@ -107,10 +141,10 @@ export default function Dashboard() {
         .replace("mcp0003", "Quận 3")
         .replace("mcp0004", "Quận 5")
         .replace("mcp0005", "Quận Bình Thạnh")
-        .replace("mcp0006", "Quận Thủ Đức"),
+        .replace("mcp0006", "Quận 9"),
     [mcp]
   );
-
+  //troller dropdown
   const trollerValue = useMemo(
     () =>
       Array.from(troller)
@@ -121,9 +155,41 @@ export default function Dashboard() {
     [troller]
   );
 
-  // console.log("ashashgda: ", mcp)
+  const handleCreateRoute = async () => {
+    axios
+      .post("http://localhost:8080/api/tasks/route", {
+        data: mcp["currentKey"],
+      })
+      .then((response) => {
+        let result = [];
+        while (result.length < 5) {
+          const randomIndex = Math.floor(Math.random() * response.data?.length);
+          const randomElement = response.data[randomIndex];
 
-  console.log("**********", amount);
+          if (!result.includes(randomElement.name)) {
+            result.push(randomElement.name);
+          }
+          setMcpRoute(result);
+        }
+      });
+  };
+
+  const handleStatusMCP = async (props) => {
+    await axios
+      .post("http://localhost:8080/api/tasks/route", {
+        data:props,
+      })
+      .then((response) => {
+          setMcpRoute(response.data)
+        })
+        
+}
+
+
+  console.log("janitor list assigned task: ", rest)
+  // console.log("janitor list")
+  
+
 
   return (
     <>
@@ -218,7 +284,7 @@ export default function Dashboard() {
                 title="Janitors"
                 color="rgb(11,0,255)"
                 text="blue"
-                data={[15-amount.janitor, amount.janitor]}
+                data={[15 - amount.janitor, amount.janitor]}
               ></DashboardChart>
               <DashboardChart
                 title="MCPs"
@@ -227,62 +293,55 @@ export default function Dashboard() {
                 data={[20, 12]}
               ></DashboardChart>
             </div>
-            <div className="flex-1 bg-white h-full px-2 py-2 rounded-xl">
+            <div className="flex-1 bg-white max-h-[230px] overflow-y-scroll px-2 py-2 rounded-xl">
               <div className="flex justify-between">
                 <p className="font-bold text-xl text-gray-400">MCPs status</p>
                 <Dropdown>
                   <Dropdown.Button
                     color={"primary"}
                     flat
-                    className="flex gap-4 w-[10px]"
+                    className="flex gap-22 "
                   >
-                    <span className="text-black"> Khu vực</span>
+                    <span className="text-black">{mcpValue||"Khu vực"}</span>
                   </Dropdown.Button>
+                  <div className="" onClick={()=>console.log("11")}>
                   <Dropdown.Menu
                     color={"primary"}
                     variant="light"
                     aria-label="Actions"
+                    selectionMode="single"
+                    selectedKeys={mcp}
+                    onSelectionChange={setMCP}
+                    onAction={handleStatusMCP}
                   >
-                    <Dropdown.Item key="new">Quận 1</Dropdown.Item>
-                    <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
-                    <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
+                   
+
+                    <Dropdown.Item key="mcp0001">Quận 1</Dropdown.Item>
+                    <Dropdown.Item key="mcp0002">Quận 2</Dropdown.Item>
+                    <Dropdown.Item key="mcp0003">Quận 3</Dropdown.Item>
+                    <Dropdown.Item key="mcp0004">Quận 5</Dropdown.Item>
+                    <Dropdown.Item key="mcp0005">Quận Bình Thạnh</Dropdown.Item>
+                    <Dropdown.Item key="mcp0006">Quận 9</Dropdown.Item>
                   </Dropdown.Menu>
+                    </div>
                 </Dropdown>
               </div>
               <Grid.Container sm={18} gap={1}>
                 <Grid>
-                  <ProgressDashboard
-                    value={23}
-                    color="success"
-                    title="Chợ Bến Thành"
+                {mcpRoute.map(item => (
+                    <ProgressDashboard
+                    value={parseInt(item.capacity?.split("%")[0])}
+                    color={parseInt(item.capacity?.split("%")[0]) < 50 ? "success" : parseInt(item.capacity?.split("%")[0]) < 75 ? "warning" : "error"}
+                    title={item.address + `, ${item.area}`}
                   />
-                  <ProgressDashboard
-                    value={40}
-                    color="success"
-                    title="48 Cô Giang, Quận 1"
-                  />
-                  <ProgressDashboard
-                    value={50}
-                    color="warning"
-                    title="Đinh Tiên Hoàng, Quận 1"
-                  />
-                  <ProgressDashboard
-                    value={90}
-                    color="error"
-                    title="Lê Thánh Tôn, Quận 7"
-                  />
-                  <ProgressDashboard
-                    value={80}
-                    color="error"
-                    title="Trường Sa, Quận Bình Thạnh"
-                  />
+                  ))}
                 </Grid>
               </Grid.Container>
             </div>
           </div>
           <div className="flex mt-2 gap-4 flex-1">
             <div className="flex-1">{showMap && <MapWithNoSSR />}</div>
-            <div className="rounded-xl h-full min-w-[380px] px-6 py-4 bg-white flex flex-col gap-1">
+            <div className="rounded-xl max-h-[415px] overflow-y-auto min-w-[380px] px-6 py-4 bg-white flex flex-col gap-1">
               <div className="flex justify-between">
                 <h2 className="text-gray-400 font-bold text-xl mb-[10px]">
                   Employees
@@ -297,6 +356,21 @@ export default function Dashboard() {
                 name="Sam Tuong"
                 role="Back Officeer"
                 status="done"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="working"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="done"
+              />
+              <EmployeeCard
+                name="Sam Tuong"
+                role="Back Officeer"
+                status="working"
               />
               <EmployeeCard
                 name="Sam Tuong"
@@ -363,7 +437,7 @@ export default function Dashboard() {
                 CHỌN DANH SÁCH JANITORS
               </div>
               <div className="min-w-[340px]">
-                <ListJanitorAssign click={click}/>
+                <ListJanitorAssign click={click} setRest={setRest} />
               </div>
               <div className=" mt-3 ">
                 {/* <Pagination total={20} initialPage={1} size="xs" /> */}
@@ -383,9 +457,8 @@ export default function Dashboard() {
                   onPress={() => {
                     setJanTask(JSON.parse(localStorage.getItem("TEMP_JAN")));
                     setJanitor(2);
-                    setClick(prev=>!prev)
+                    setClick((prev) => !prev);
                   }}
-                  
                   color="primary"
                   auto
                 >
@@ -485,7 +558,7 @@ export default function Dashboard() {
                       <Dropdown.Item key="mcp0005">
                         Quận Bình Thạnh
                       </Dropdown.Item>
-                      <Dropdown.Item key="mcp0006">Quận Thủ Đức</Dropdown.Item>
+                      <Dropdown.Item key="mcp0006">Quận 9</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
@@ -660,19 +733,22 @@ export default function Dashboard() {
                     flat
                     className="flex gap-32 "
                   >
-                    <span className="text-black">
-                      {" "}
-                      Chọn nơi làm việc (MCPs)
-                    </span>
+                    <span className="text-black">{mcpValue||"Chọn MCPs"}</span>
                   </Dropdown.Button>
                   <Dropdown.Menu
                     color={"primary"}
                     variant="light"
                     aria-label="Actions"
+                    selectionMode="single"
+                    selectedKeys={mcp}
+                    onSelectionChange={setMCP}
                   >
-                    <Dropdown.Item key="new">Quận 1</Dropdown.Item>
-                    <Dropdown.Item key="copy">Quận 2</Dropdown.Item>
-                    <Dropdown.Item key="edit">Quận 3</Dropdown.Item>
+                    <Dropdown.Item key="mcp0001">Quận 1</Dropdown.Item>
+                    <Dropdown.Item key="mcp0002">Quận 2</Dropdown.Item>
+                    <Dropdown.Item key="mcp0003">Quận 3</Dropdown.Item>
+                    <Dropdown.Item key="mcp0004">Quận 5</Dropdown.Item>
+                    <Dropdown.Item key="mcp0005">Quận Bình Thạnh</Dropdown.Item>
+                    <Dropdown.Item key="mcp0006">Quận 9</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
@@ -681,6 +757,7 @@ export default function Dashboard() {
                 // onPress={}
                 color="primary"
                 auto
+                onClick={handleCreateRoute}
               >
                 Generate Route
               </Button>
@@ -691,8 +768,7 @@ export default function Dashboard() {
             <div className="my-[20px]">
               <p>
                 {" "}
-                <b>Tuyến đường gợi ý: </b> Deport - MCP1 - MCP3 - MCP2 -MCP4 -
-                MCP5 - MCP 1 (10km)
+                <b>Tuyến đường gợi ý: </b> Deport - {mcpRoute.join(" - ")}
               </p>
             </div>
             <div className="flex w-full justify-end gap-5 ">

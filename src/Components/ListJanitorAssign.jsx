@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, Grid } from "@nextui-org/react";
 
 const columns = [
@@ -6,9 +6,7 @@ const columns = [
   { key: "address", name: "Address", width: 200 },
 ];
 
-
-
-const ListJanitorAssign = () => {
+const ListJanitorAssign = (props) => {
   const [rows, setRows] = useState([
     { id: 0, name: "John Doe", address: "Quận 1", status: "None" },
     { id: 1, name: "Jane Smith", address: "Quận 3", status: "None" },
@@ -16,27 +14,30 @@ const ListJanitorAssign = () => {
     { id: 3, name: "Kyle Walker", address: "Quận Bình Thạnh", status: "None" },
     { id: 4, name: "Ronaldo", address: "Quận Tân Phú", status: "None" },
     { id: 5, name: "Lewandoski", address: "Quận Bình Chánh", status: "None" },
-    { id: 6, name: "LauSamTuong", address: "Quận 1", status: "None" }, 
-    { id: 7, name: "LauSamTuong", address: "Quận 11", status: "None" }, 
-    { id: 8, name: "LauSamTuong", address: "Quận 1", status: "None" }, 
-    { id: 9, name: "LauSamTuong", address: "Quận 3", status: "None" }, 
-    { id: 10, name: "LauSamTuong", address: "Quận 5", status: "None" }, 
-    { id: 11, name: "LauSamTuong", address: "Quận 6", status: "None" }, 
-    { id: 12, name: "LauSamTuong", address: "Quận 4", status: "None" }, 
-    { id: 13, name: "LauSamTuong", address: "Quận Bình Tân", status: "None" }, 
-    { id: 14, name: "LauSamTuong", address: "Quận Bình Chánh", status: "None" }, 
+    { id: 6, name: "LauSamTuong", address: "Quận 1", status: "None" },
+    { id: 7, name: "LauSamTuong", address: "Quận 11", status: "None" },
+    { id: 8, name: "LauSamTuong", address: "Quận 1", status: "None" },
+    { id: 9, name: "LauSamTuong", address: "Quận 3", status: "None" },
+    { id: 10, name: "LauSamTuong", address: "Quận 5", status: "None" },
+    { id: 11, name: "LauSamTuong", address: "Quận 6", status: "None" },
+    { id: 12, name: "LauSamTuong", address: "Quận 4", status: "None" },
+    { id: 13, name: "LauSamTuong", address: "Quận Bình Tân", status: "None" },
+    { id: 14, name: "LauSamTuong", address: "Quận Bình Chánh", status: "None" },
   ]);
   useEffect(() => {
-    
-    const arr2=JSON?.parse(localStorage.getItem('JAN'))
+    const arr2 = JSON?.parse(localStorage.getItem("JAN"));
     function filterUniqueObjects(arr1, arr2) {
-      const uniqueArr1 = arr1.filter((obj1) => !arr2.some((obj2) => obj2.id === obj1.id));
-      const uniqueArr2 = arr2.filter((obj2) => !arr1.some((obj1) => obj1.id === obj2.id));
+      const uniqueArr1 = arr1.filter(
+        (obj1) => !arr2.some((obj2) => obj2.id === obj1.id)
+      );
+      const uniqueArr2 = arr2.filter(
+        (obj2) => !arr1.some((obj1) => obj1.id === obj2.id)
+      );
       return [...uniqueArr1, ...uniqueArr2];
     }
-    setRows(()=>filterUniqueObjects(rows,arr2))
-
+    setRows(() => filterUniqueObjects(rows, arr2));
   }, []);
+
   const [selectedRows, setSelectedRows] = useState([]);
   const [janList, setJanList] = useState([]);
   function handleRowClick(order) {
@@ -48,21 +49,48 @@ const ListJanitorAssign = () => {
       setJanList(
         janList.filter((selectedIndex, index) => selectedIndex.id !== order)
       );
-  
+
       setSelectedRows(
         selectedRows.filter((selectedIndex) => selectedIndex !== order)
       );
     } else {
       setSelectedRows([...selectedRows, order]);
-      setJanList([...janList, rows[order]]);
+      setJanList((state) => {
+        return [...janList, rows[order]];
+      });
     }
-   
   }
-  localStorage.setItem("TEMP_JAN", JSON.stringify(janList)||"[]");
-
-
-  
-  
+  localStorage.setItem(
+    "JAN_LIST",
+    JSON.stringify([
+      { id: 0, name: "John Doe", address: "Quận 1", status: "None" },
+      { id: 1, name: "Jane Smith", address: "Quận 3", status: "None" },
+      { id: 2, name: "Bob Johnson", address: "Quận 5", status: "None" },
+      {
+        id: 3,
+        name: "Kyle Walker",
+        address: "Quận Bình Thạnh",
+        status: "None",
+      },
+      { id: 4, name: "Ronaldo", address: "Quận Tân Phú", status: "None" },
+      { id: 5, name: "Lewandoski", address: "Quận Bình Chánh", status: "None" },
+      { id: 6, name: "LauSamTuong", address: "Quận 1", status: "None" },
+      { id: 7, name: "LauSamTuong", address: "Quận 11", status: "None" },
+      { id: 8, name: "LauSamTuong", address: "Quận 1", status: "None" },
+      { id: 9, name: "LauSamTuong", address: "Quận 3", status: "None" },
+      { id: 10, name: "LauSamTuong", address: "Quận 5", status: "None" },
+      { id: 11, name: "LauSamTuong", address: "Quận 6", status: "None" },
+      { id: 12, name: "LauSamTuong", address: "Quận 4", status: "None" },
+      { id: 13, name: "LauSamTuong", address: "Quận Bình Tân", status: "None" },
+      {
+        id: 14,
+        name: "LauSamTuong",
+        address: "Quận Bình Chánh",
+        status: "None",
+      },
+    ])
+  );
+  localStorage.setItem("TEMP_JAN", JSON.stringify(janList) || "[]");
 
   return (
     <table>
