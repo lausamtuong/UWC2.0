@@ -25,7 +25,7 @@ export default function Dashboard() {
   });
   const [click, setClick] = useState(false);
   const [amount, setAmount] = useState({ janitor: 15, collector: 15 });
-  const [list, setList] = useState([])
+  const [list, setList] = useState([]);
   const [assignTask, setAssignTask] = useState(false);
   const [scheduleJan, setScheduleJan] = useState("");
   const [mcp, setMCP] = useState("");
@@ -35,7 +35,7 @@ export default function Dashboard() {
   const [janitor, setJanitor] = useState(0);
   const [mcpRoute, setMcpRoute] = useState([]);
   const [collector, setCollector] = useState(false);
-  const [rest, setRest] = useState([])
+  const [rest, setRest] = useState([]);
   const handleAssignTask = () => setAssignTask(true);
   const handleRoute = () => setRoute(true);
   const closeHandler = () => {
@@ -68,6 +68,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     let janTemp = JSON.parse(window.localStorage.getItem("JAN"));
+    //localStorage.setItem('JAN_LIST',"[]")
     setShowMap(true);
     setAmount((state) => {
       return {
@@ -99,16 +100,24 @@ export default function Dashboard() {
           status: "working",
         };
       })
-    )
-    let temp1 = JSON.parse(localStorage.getItem("JAN_LIST"))
-    let temp2 = JSON.parse(localStorage.getItem("JAN"))
+    );
+    let temp1 = JSON.parse(localStorage.getItem("JAN_LIST"));
+    let temp2 = JSON.parse(localStorage.getItem("JAN"));
     setList(
-       temp1.map((item) => {
-        if(temp2.map(obj => {
-          if(obj.id === item.id) return {...item, status: "working"}
-        }) )
-       })
-    )
+      //  temp1.map((item) => {
+      //   if(temp2.map(obj => {
+      //     if(obj.id === item.id) return {...item, status: "working"}
+
+      //   }) )
+      //   {return {...item,status:"123"}}
+      // else { return {...item,status:"done"}}
+      //  })
+      temp1.map((i1) => {
+        return temp2.filter((i2) => i2.id == i1.id)[0]
+          ? { ...temp2.filter((i2) => i2.id == i1.id)[0], status: "working" }
+          : { ...i1, status: "done" };
+      })
+    );
     localStorage.setItem(
       "JAN",
       JSON.stringify(
@@ -117,8 +126,7 @@ export default function Dashboard() {
     );
   }, [troller]);
 
-  // console.log("asdjhad", JSON.parse(localStorage.getItem("JAN")))
-  console.log("asdjakjshdasdhad", list)
+  console.log(list);
 
   //timeline dropdown
   const selectedValue = useMemo(
@@ -139,7 +147,7 @@ export default function Dashboard() {
         .replace("mcp0001", "Quận 1")
         .replace("mcp0002", "Quận 2")
         .replace("mcp0003", "Quận 3")
-        .replace("mcp0004", "Quận 5")
+        .replace("mcp0004", "Quận 4")
         .replace("mcp0005", "Quận Bình Thạnh")
         .replace("mcp0006", "Quận 9"),
     [mcp]
@@ -177,19 +185,15 @@ export default function Dashboard() {
   const handleStatusMCP = async (props) => {
     await axios
       .post("http://localhost:8080/api/tasks/route", {
-        data:props,
+        data: props,
       })
       .then((response) => {
-          setMcpRoute(response.data)
-        })
-        
-}
+        setMcpRoute(response.data);
+      });
+  };
 
-
-  console.log("janitor list assigned task: ", rest)
+  console.log("janitor list assigned task: ", rest);
   // console.log("janitor list")
-  
-
 
   return (
     <>
@@ -302,38 +306,44 @@ export default function Dashboard() {
                     flat
                     className="flex gap-22 "
                   >
-                    <span className="text-black">{mcpValue||"Khu vực"}</span>
+                    <span className="text-black">{mcpValue || "Khu vực"}</span>
                   </Dropdown.Button>
-                  <div className="" onClick={()=>console.log("11")}>
-                  <Dropdown.Menu
-                    color={"primary"}
-                    variant="light"
-                    aria-label="Actions"
-                    selectionMode="single"
-                    selectedKeys={mcp}
-                    onSelectionChange={setMCP}
-                    onAction={handleStatusMCP}
-                  >
-                   
-
-                    <Dropdown.Item key="mcp0001">Quận 1</Dropdown.Item>
-                    <Dropdown.Item key="mcp0002">Quận 2</Dropdown.Item>
-                    <Dropdown.Item key="mcp0003">Quận 3</Dropdown.Item>
-                    <Dropdown.Item key="mcp0004">Quận 5</Dropdown.Item>
-                    <Dropdown.Item key="mcp0005">Quận Bình Thạnh</Dropdown.Item>
-                    <Dropdown.Item key="mcp0006">Quận 9</Dropdown.Item>
-                  </Dropdown.Menu>
-                    </div>
+                  <div className="" onClick={() => console.log("11")}>
+                    <Dropdown.Menu
+                      color={"primary"}
+                      variant="light"
+                      aria-label="Actions"
+                      selectionMode="single"
+                      selectedKeys={mcp}
+                      onSelectionChange={setMCP}
+                      onAction={handleStatusMCP}
+                    >
+                      <Dropdown.Item key="mcp0001">Quận 1</Dropdown.Item>
+                      <Dropdown.Item key="mcp0002">Quận 2</Dropdown.Item>
+                      <Dropdown.Item key="mcp0003">Quận 3</Dropdown.Item>
+                      <Dropdown.Item key="mcp0004">Quận 4</Dropdown.Item>
+                      <Dropdown.Item key="mcp0005">
+                        Quận Bình Thạnh
+                      </Dropdown.Item>
+                      <Dropdown.Item key="mcp0006">Quận 9</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </div>
                 </Dropdown>
               </div>
               <Grid.Container sm={18} gap={1}>
                 <Grid>
-                {mcpRoute.map(item => (
+                  {mcpRoute.map((item) => (
                     <ProgressDashboard
-                    value={parseInt(item.capacity?.split("%")[0])}
-                    color={parseInt(item.capacity?.split("%")[0]) < 50 ? "success" : parseInt(item.capacity?.split("%")[0]) < 75 ? "warning" : "error"}
-                    title={item.address + `, ${item.area}`}
-                  />
+                      value={parseInt(item.capacity?.split("%")[0])}
+                      color={
+                        parseInt(item.capacity?.split("%")[0]) < 50
+                          ? "success"
+                          : parseInt(item.capacity?.split("%")[0]) < 75
+                          ? "warning"
+                          : "error"
+                      }
+                      title={item.address + `, ${item.area}`}
+                    />
                   ))}
                 </Grid>
               </Grid.Container>
@@ -352,46 +362,15 @@ export default function Dashboard() {
                   </Button>
                 </Link>
               </div>
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="done"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="working"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="done"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="working"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="working"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="done"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="working"
-              />
-              <EmployeeCard
-                name="Sam Tuong"
-                role="Back Officeer"
-                status="working"
-              />
+              {list?.sort((a, b) => 0.5 - Math.random()).map((emp) => {
+                return (
+                  <EmployeeCard
+                    name={emp.name}
+                    role="Janitor"
+                    status={emp.status}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
@@ -554,7 +533,7 @@ export default function Dashboard() {
                       <Dropdown.Item key="mcp0001">Quận 1</Dropdown.Item>
                       <Dropdown.Item key="mcp0002">Quận 2</Dropdown.Item>
                       <Dropdown.Item key="mcp0003">Quận 3</Dropdown.Item>
-                      <Dropdown.Item key="mcp0004">Quận 5</Dropdown.Item>
+                      <Dropdown.Item key="mcp0004">Quận 4</Dropdown.Item>
                       <Dropdown.Item key="mcp0005">
                         Quận Bình Thạnh
                       </Dropdown.Item>
@@ -733,7 +712,9 @@ export default function Dashboard() {
                     flat
                     className="flex gap-32 "
                   >
-                    <span className="text-black">{mcpValue||"Chọn MCPs"}</span>
+                    <span className="text-black">
+                      {mcpValue || "Chọn MCPs"}
+                    </span>
                   </Dropdown.Button>
                   <Dropdown.Menu
                     color={"primary"}
@@ -746,7 +727,7 @@ export default function Dashboard() {
                     <Dropdown.Item key="mcp0001">Quận 1</Dropdown.Item>
                     <Dropdown.Item key="mcp0002">Quận 2</Dropdown.Item>
                     <Dropdown.Item key="mcp0003">Quận 3</Dropdown.Item>
-                    <Dropdown.Item key="mcp0004">Quận 5</Dropdown.Item>
+                    <Dropdown.Item key="mcp0004">Quận 4</Dropdown.Item>
                     <Dropdown.Item key="mcp0005">Quận Bình Thạnh</Dropdown.Item>
                     <Dropdown.Item key="mcp0006">Quận 9</Dropdown.Item>
                   </Dropdown.Menu>
