@@ -56,7 +56,7 @@
     { "id": "mcp0006", "area": "Quận 9", "capacity": "26%", "janitor": [],"name":"MCPQ9_212","address":"Trường Sa" },
     { "id": "mcp0006", "area": "Quận 9", "capacity": "56%", "janitor": [],"name":"MCPQ9_887","address":"CMT8" },
     { "id": "mcp0006", "area": "Quận 9", "capacity": "68%", "janitor": [],"name":"MCPQ9_231" ,"address":"Lê Thánh Tôn" },
-    { "id": "mcp0006", "area": "Quận 9", "capacity": "20%", "janitor": [],"name":"MCPQ9_390","address":"Trần Quốc Toản" },
-    { "id": "mcp0006", "area": "Quận 9", "capacity": "19%", "janitor": [],"name":"MCPQ9_313" ,"address":"Bến Thành"},
-    { "id": "mcp0006", "area": "Quận 9", "capacity": "30%", "janitor": [],"name":"MCPQ9_300","address":"Bùi Viện" }
+    { "id": "mcp0006", "area": "Quận 9", "capacity": "66%", "janitor": [],"name":"MCPQ9_390","address":"Trần Quốc Toản" },
+    { "id": "mcp0006", "area": "Quận 9", "capacity": "66%", "janitor": [],"name":"MCPQ9_313" ,"address":"Bến Thành"},
+    { "id": "mcp0006", "area": "Quận 9", "capacity": "66%", "janitor": [],"name":"MCPQ9_300","address":"Bùi Viện" }
 ]
