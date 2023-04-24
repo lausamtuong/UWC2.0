@@ -112,11 +112,11 @@ export default function Dashboard() {
       //   {return {...item,status:"123"}}
       // else { return {...item,status:"done"}}
       //  })
-      temp1.map((i1) => {
+      temp1?.map((i1) => {
         return temp2.filter((i2) => i2.id == i1.id)[0]
           ? { ...temp2.filter((i2) => i2.id == i1.id)[0], status: "working" }
           : { ...i1, status: "done" };
-      })
+      })||[]
     );
     localStorage.setItem(
       "JAN",
@@ -180,6 +180,8 @@ export default function Dashboard() {
           setMcpRoute(result);
         }
       });
+      alert('Success!')
+      router.refresh();
   };
 
   const handleStatusMCP = async (props) => {
